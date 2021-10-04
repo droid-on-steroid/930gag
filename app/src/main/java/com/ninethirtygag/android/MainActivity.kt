@@ -1,15 +1,16 @@
 package com.ninethirtygag.android
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.ninethirtygag.android.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel: MainViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val binding: ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        supportFragmentManager.beginTransaction()
+            .add(binding.container.id, MainFragment.newInstance()).commit()
     }
 }
