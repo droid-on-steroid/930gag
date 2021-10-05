@@ -34,6 +34,9 @@ class MemeViewHolder(private val itemMemeBinding: ItemMemeBinding) :
 
     fun bindMeme(meme: Meme) {
         itemMemeBinding.txtTitle.text = meme.name
-        Glide.with(itemMemeBinding.imgMeme).load(meme.url).into(itemMemeBinding.imgMeme)
+        Glide.with(itemMemeBinding.imgMeme)
+            .load(meme.url)
+            .placeholder(R.drawable.ic_baseline_image_120)
+            .into(itemMemeBinding.imgMeme)
     }
 }
