@@ -29,10 +29,11 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val memesAdapter = MemesAdapter()
         binding.listMemes.adapter = memesAdapter
-        mainViewModel.memes.observe(viewLifecycleOwner) { memes ->
-            memesAdapter.setMemes(memes.data ?: emptyList())
-            binding.txtError.isVisible = memes is Resource.Error && memes.data.isNullOrEmpty()
-            binding.progress.isVisible = memes is Resource.Error && memes.data.isNullOrEmpty()
+        mainViewModel.memes.observe(viewLifecycleOwner) { result ->
+            memesAdapter.setMemes(result.data ?: emptyList())
+            binding.progress.isVisible = result is Resource.Loading && result.data.isNullOrEmpty()
+            binding.txtError.isVisible = result is Resource.Error && result.data.isNullOrEmpty()
+            binding.txtError.text = result.error?.localizedMessage ?: "Something went wrong"
         }
 
         mainViewModel.getMemes()
