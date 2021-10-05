@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ninethirtygag.android.databinding.FragmentMainBinding
+import com.ninethirtygag.android.utils.Resource
 
 class MainFragment : Fragment() {
 
@@ -29,18 +30,11 @@ class MainFragment : Fragment() {
         val memesAdapter = MemesAdapter()
         binding.listMemes.adapter = memesAdapter
         mainViewModel.memes.observe(viewLifecycleOwner) { memes ->
-            memesAdapter.setMemes(memes)
+            memesAdapter.setMemes(memes.data ?: emptyList())
+            binding.txtError.isVisible = memes is Resource.Error && memes.data.isNullOrEmpty()
+            binding.progress.isVisible = memes is Resource.Error && memes.data.isNullOrEmpty()
         }
 
-        mainViewModel.error.observe(viewLifecycleOwner) {
-            binding.txtError.isVisible = it != null
-            binding.txtError.text = it
-            binding.listMemes.isVisible = it == null
-        }
-
-        mainViewModel.loading.observe(viewLifecycleOwner) {
-            binding.progress.isVisible = it
-        }
         mainViewModel.getMemes()
     }
 
