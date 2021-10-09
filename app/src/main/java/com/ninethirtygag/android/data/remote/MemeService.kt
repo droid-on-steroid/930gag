@@ -1,9 +1,10 @@
-package com.ninethirtygag.android.data
+package com.ninethirtygag.android.data.remote
 
 import com.ninethirtygag.android.BuildConfig
-import com.ninethirtygag.android.data.models.Meme
+import com.ninethirtygag.android.data.remote.response.MemeRes
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
@@ -13,7 +14,7 @@ import retrofit2.http.Query
 interface MemeService {
 
     @GET("cats")
-    suspend fun getMemes(@Query("limit") limit: Int = 30): List<Meme>
+    suspend fun getMemes(@Query("limit") limit: Int = 30): Response<List<MemeRes>>
 
     companion object {
 
