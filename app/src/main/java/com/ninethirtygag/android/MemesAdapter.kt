@@ -32,11 +32,11 @@ class MemesAdapter : RecyclerView.Adapter<MemeViewHolder>() {
 class MemeViewHolder(private val itemMemeBinding: ItemMemeBinding) :
     RecyclerView.ViewHolder(itemMemeBinding.root) {
 
-    fun bindMeme(meme: Meme) {
+    fun bindMeme(memeRes: Meme) {
         itemMemeBinding.apply {
-            txtTitle.text = meme.tags?.joinToString()
+            txtTitle.text = memeRes.title
             Glide.with(itemMemeBinding.imgMeme)
-                .load(meme.url)
+                .load(memeRes.url)
                 .placeholder(R.drawable.ic_baseline_image_120)
                 .into(itemMemeBinding.imgMeme)
         }
