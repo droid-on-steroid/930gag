@@ -33,10 +33,12 @@ class MemeViewHolder(private val itemMemeBinding: ItemMemeBinding) :
     RecyclerView.ViewHolder(itemMemeBinding.root) {
 
     fun bindMeme(meme: Meme) {
-        itemMemeBinding.txtTitle.text = meme.name
-        Glide.with(itemMemeBinding.imgMeme)
-            .load(meme.url)
-            .placeholder(R.drawable.ic_baseline_image_120)
-            .into(itemMemeBinding.imgMeme)
+        itemMemeBinding.apply {
+            txtTitle.text = meme.tags?.joinToString()
+            Glide.with(itemMemeBinding.imgMeme)
+                .load(meme.url)
+                .placeholder(R.drawable.ic_baseline_image_120)
+                .into(itemMemeBinding.imgMeme)
+        }
     }
 }

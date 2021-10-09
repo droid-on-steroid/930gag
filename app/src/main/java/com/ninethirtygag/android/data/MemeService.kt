@@ -1,30 +1,37 @@
 package com.ninethirtygag.android.data
 
-import com.ninethirtygag.android.data.models.ImgFlip
+import com.ninethirtygag.android.BuildConfig
+import com.ninethirtygag.android.data.models.Meme
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 
 interface MemeService {
 
-    @GET("get_memes")
-    suspend fun getMemes(): ImgFlip
+    @GET("cats")
+    suspend fun getMemes(@Query("limit") limit: Int = 30): List<Meme>
 
     companion object {
 
-        private const val BASE_URL = "https://api.imgflip.com/"
+        const val BASE_URL = "https://cataas.com/"
+        private const val API_SUFFIX = "api/"
 
         fun create(): MemeService {
             val interceptor = HttpLoggingInterceptor()
-            // TODO for debug only
-            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+
+            interceptor.setLevel(
+                if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+                else HttpLoggingInterceptor.Level.NONE
+            )
+
             val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
             val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(BASE_URL + API_SUFFIX)
                 .client(client)
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()

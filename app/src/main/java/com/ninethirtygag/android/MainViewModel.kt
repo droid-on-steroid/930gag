@@ -21,7 +21,7 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             _memes.postValue(Resource.Loading())
             try {
-                val memes = memeService.getMemes().data?.memes
+                val memes = memeService.getMemes()
                 _memes.postValue(Resource.Success(memes))
             } catch (e: Exception) {
                 e.printStackTrace()

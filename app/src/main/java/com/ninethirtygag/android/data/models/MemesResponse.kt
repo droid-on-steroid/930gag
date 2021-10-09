@@ -1,17 +1,12 @@
 package com.ninethirtygag.android.data.models
 
+import com.ninethirtygag.android.data.MemeService
 import com.squareup.moshi.Json
 
-data class Data(val memes: List<Meme>? = null)
-
-data class ImgFlip(val success: Boolean? = null, val data: Data? = null)
-
 data class Meme(
-    val id: String?,
-    val name: String?,
-    val url: String?,
-    val width: Int?,
-    val height: Int?,
-    @Json(name = "box_count")
-    val boxCount: Int?
-)
+    @Json(name = "id") val id: String? = null,
+    @Json(name = "created_at") val createdAt: String? = null,
+    @Json(name = "tags") val tags: List<String>? = null
+) {
+    val url: String get() = "${MemeService.BASE_URL}cat/$id"
+}
