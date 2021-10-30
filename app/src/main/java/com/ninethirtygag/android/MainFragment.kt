@@ -7,8 +7,11 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ninethirtygag.android.databinding.FragmentMainBinding
 import com.ninethirtygag.android.utils.Resource
+import com.ninethirtygag.android.utils.pagination.EndlessRecyclerViewScrollListener
 
 class MainFragment : Fragment() {
 
@@ -29,6 +32,13 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val memesAdapter = MemesAdapter()
         binding.listMemes.adapter = memesAdapter
+        binding.listMemes.addOnScrollListener(object :
+            EndlessRecyclerViewScrollListener(binding.listMemes.layoutManager as LinearLayoutManager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                mainViewModel.loadMoreMemes()
+            }
+        })
+
         mainViewModel.memes.observe(viewLifecycleOwner) { result ->
             memesAdapter.setMemes(result.data ?: emptyList())
             binding.progress.isVisible = result is Resource.Loading && result.data.isNullOrEmpty()

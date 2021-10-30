@@ -16,6 +16,9 @@ class MainViewModel : ViewModel() {
     private val _memes = MutableLiveData<Resource<List<Meme>?>>()
     val memes get() = _memes.asLiveData
 
+    fun loadMoreMemes() {
+        // TODO Handle pagination here
+    }
 
     fun getMemes() {
         viewModelScope.launch {
