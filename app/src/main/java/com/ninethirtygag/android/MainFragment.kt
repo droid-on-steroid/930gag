@@ -30,23 +30,29 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val memesAdapter = MemesAdapter()
-        binding.listMemes.adapter = memesAdapter
-        binding.listMemes.addOnScrollListener(object :
+
+        val paginationListener = object :
             EndlessRecyclerViewScrollListener(binding.listMemes.layoutManager as LinearLayoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 mainViewModel.loadMoreMemes()
             }
-        })
+        }
+
+        val memesAdapter = MemesAdapter()
+        binding.listMemes.adapter = memesAdapter
+        binding.listMemes.addOnScrollListener(paginationListener)
 
         mainViewModel.memes.observe(viewLifecycleOwner) { result ->
             memesAdapter.setMemes(result.data ?: emptyList())
             binding.progress.isVisible = result is Resource.Loading && result.data.isNullOrEmpty()
             binding.txtError.isVisible = result is Resource.Error && result.data.isNullOrEmpty()
             binding.txtError.text = result.error?.localizedMessage ?: "Something went wrong"
+            if (result is Resource.Success || result is Resource.Error) {
+                paginationListener.apiComplete()
+            }
         }
 
-        mainViewModel.getMemes()
+        mainViewModel.loadMoreMemes()
     }
 
     companion object {
