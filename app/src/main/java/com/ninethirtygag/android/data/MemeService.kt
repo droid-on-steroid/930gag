@@ -13,7 +13,10 @@ import retrofit2.http.Query
 interface MemeService {
 
     @GET("cats")
-    suspend fun getMemes(@Query("limit") limit: Int = 30): List<Meme>
+    suspend fun getMemes(
+        @Query("skip") skip: Int,
+        @Query("limit") limit: Int = 30
+    ): List<Meme>
 
     companion object {
 
